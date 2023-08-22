@@ -216,19 +216,19 @@ class MiniFASNet(Module):
         self.prob = Linear(embedding_size, num_classes, bias=False)
 
     def forward(self, x):
-        out = self.conv1(x)
-        out = self.conv2_dw(out)
-        out = self.conv_23(out)
-        out = self.conv_3(out)
-        out = self.conv_34(out)
-        out = self.conv_4(out)
-        out = self.conv_45(out)
-        out = self.conv_5(out)
-        out = self.conv_6_sep(out)
-        out = self.conv_6_dw(out)
-        out = self.conv_6_flatten(out)
-        if self.embedding_size != 512:
-            out = self.linear(out)
+        out = self.conv1(x)  # [1, 3, 80, 80]
+        out = self.conv2_dw(out)  # [1, 32, 40, 40]
+        out = self.conv_23(out)  # [1, 32, 40, 40]
+        out = self.conv_3(out)  # [1, 64, 20, 20]
+        out = self.conv_34(out)  # [1, 64, 20, 20]
+        out = self.conv_4(out)  # [1, 128, 10, 10]
+        out = self.conv_45(out)  # [1, 128, 10, 10]
+        out = self.conv_5(out)  # [1, 128, 5, 5]
+        out = self.conv_6_sep(out)  # [1, 128, 5, 5]
+        out = self.conv_6_dw(out)  # [1, 512, 5, 5]
+        out = self.conv_6_flatten(out)  # [1, 512, 1, 1]
+        if self.embedding_size != 512:  # [1, 512]
+            out = self.linear(out)  # [1, 128]
         out = self.bn(out)
         out = self.drop(out)
         out = self.prob(out)

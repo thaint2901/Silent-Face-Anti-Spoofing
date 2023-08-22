@@ -15,7 +15,7 @@ except ImportError:
 import numpy as np
 import numbers
 import types
-import collections
+import collections.abc as collections
 import warnings
 
 

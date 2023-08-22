@@ -6,7 +6,7 @@
 # @Software : PyCharm
 
 from torch.utils.data import DataLoader
-from src.data_io.dataset_folder import DatasetFolderFT
+from src.data_io.dataset_folder import DatasetFolderFT, MXDatasetFT
 from src.data_io import transform as trans
 
 
@@ -22,8 +22,12 @@ def get_train_loader(conf):
         trans.ToTensor()
     ])
     root_path = '{}/{}'.format(conf.train_root_path, conf.patch_info)
-    trainset = DatasetFolderFT(root_path, train_transform,
-                               None, conf.ft_width, conf.ft_height)
+    # trainset = DatasetFolderFT(root_path, train_transform,
+    #                            None, conf.ft_width, conf.ft_height)
+    scale = float(conf.patch_info.split('_')[0])
+    trainset = MXDatasetFT(conf.train_root_path, train_transform,
+                               None, conf.ft_width, conf.ft_height, scale)
+    trainset[0]
     train_loader = DataLoader(
         trainset,
         batch_size=conf.batch_size,
