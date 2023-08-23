@@ -70,8 +70,8 @@ class MXDatasetFT(Dataset):
         self.ft_width = ft_width
         self.ft_height = ft_height
         self.scale = scale
-        path_imgrec = os.path.join(root, 'train.rec')
-        path_imgidx = os.path.join(root, 'train.idx')
+        path_imgrec = os.path.join(root, f'train_{scale}.rec')
+        path_imgidx = os.path.join(root, f'train_{scale}.idx')
         self.imgrec = mx.recordio.MXIndexedRecordIO(path_imgidx, path_imgrec, 'r')
         self.imgidx = np.array(list(self.imgrec.keys))
 
@@ -93,11 +93,11 @@ class MXDatasetFT(Dataset):
         sample = mx.image.imdecode(img).asnumpy()  # RGB
         bbox = label[1:5].astype(np.int32)
         label = label[0]
-        label = torch.tensor(label)
+        label = torch.tensor(label, dtype=torch.long)
         
         # crop
-        bbox = get_new_box(sample.shape[0], sample.shape[1], bbox, scale=self.scale)
-        sample = sample[bbox[1]:bbox[3], bbox[0]:bbox[2]]
+        # bbox = get_new_box(sample.shape[0], sample.shape[1], bbox, scale=self.scale)
+        # sample = sample[bbox[1]:bbox[3], bbox[0]:bbox[2]]
         sample = cv2.cvtColor(sample, cv2.COLOR_RGB2BGR)
         ft_sample = generate_FT(sample)
 
@@ -134,5 +134,5 @@ def generate_FT(image):
 
 
 if __name__ == "__main__":
-    train_set = MXDatasetFT(root="/mnt/nvme0n1p2/datasets/untispoofing/CVPR2023-Anti_Spoof-Challenge-Release-Data-20230209", scale=4.0)
+    train_set = MXDatasetFT(root="/mnt/nvme0n1p2/datasets/untispoofing/CVPR2023-Anti_Spoof-Challenge-Release-Data-20230209", scale=1.5)
     print(train_set[0])
