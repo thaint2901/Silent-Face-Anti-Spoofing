@@ -96,8 +96,8 @@ class MXDatasetFT(Dataset):
         label = torch.tensor(label, dtype=torch.long)
         
         # crop
-        # bbox = get_new_box(sample.shape[0], sample.shape[1], bbox, scale=self.scale)
-        # sample = sample[bbox[1]:bbox[3], bbox[0]:bbox[2]]
+        bbox = get_new_box(sample.shape[0], sample.shape[1], bbox, scale=self.scale)
+        sample = sample[bbox[1]:bbox[3], bbox[0]:bbox[2]]
         sample = cv2.cvtColor(sample, cv2.COLOR_RGB2BGR)
         ft_sample = generate_FT(sample)
 
