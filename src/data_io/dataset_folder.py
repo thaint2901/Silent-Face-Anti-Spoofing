@@ -70,8 +70,8 @@ class MXDatasetFT(Dataset):
         self.ft_width = ft_width
         self.ft_height = ft_height
         self.scale = scale
-        path_imgrec = os.path.join(root, f'train_{scale}.rec')
-        path_imgidx = os.path.join(root, f'train_{scale}.idx')
+        path_imgrec = os.path.join(root, f'train_4.0.rec')
+        path_imgidx = os.path.join(root, f'train_4.0.idx')
         self.imgrec = mx.recordio.MXIndexedRecordIO(path_imgidx, path_imgrec, 'r')
         self.imgidx = np.array(list(self.imgrec.keys))
 
